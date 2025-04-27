@@ -15,7 +15,7 @@ static int segment_file(const char* fname)
     size_t count = 0;
     size_t count_total = 0;
     char filename[255] = { 0 };
-    char buffer[1024] = { 0 };
+    char buffer[1024 * 10] = { 0 };
     strcpy(filename, fname);
     char* temp = strrchr(filename, '.');
     if (temp) temp[0] = '\0';
@@ -34,18 +34,18 @@ static int segment_file(const char* fname)
             sprintf(buffer, "%s.%03i", filename, seg);
             fOUT = fopen(buffer, "wb");
             count = 0;
-            printf("%s %i, %ul\n", buffer, seg, count_total);
+            printf("%s %03i, %llu\n", buffer, (int)seg, count_total);
         }
     }
     if (fLOG) fclose(fLOG);
     if (fOUT) fclose(fOUT);
-    printf("%s %i, %ul\n", buffer, seg, count_total);
+    printf("%s %03i, %llu\n", fname, (int)seg, count_total);
     return ret;
 }
 
 int main(int argc, const char* argv[])
 {
-    if (argc > 2)
+    if (argc > 1)
     {
         segment_file(argv[1]);
     }
